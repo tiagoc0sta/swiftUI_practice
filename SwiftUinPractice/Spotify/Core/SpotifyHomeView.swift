@@ -28,7 +28,16 @@ struct SpotifyHomeView: View {
             }
         }
         .task {
-            <#code#>
+            await getData()
+        }
+    }
+    
+    private func getData() async {
+        do {
+            currentUser = try await DatabaseHelper().getUsers().first
+            //products = try await DatabaseHelper().getProducts()
+        } catch {
+            
         }
     }
 }
