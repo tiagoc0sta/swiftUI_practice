@@ -10,21 +10,39 @@ import SwiftUI
 struct SpotifyHomeView: View {
     
     @State private var currentUser: User? = nil
+    @State private var selectedCategory: Category? = nil
     
     var body: some View {
         ZStack {
             Color.spotifyBlack.ignoresSafeArea()
             
-            HStack {
-                if let currentUser {
-                    ImageLoaderView(urlString: currentUser.image)
-                        .frame(width: 30, height: 30)
-                        .background(.spotifyWhite)
-                        .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
-                        .onTapGesture {
-                            <#code#>
-                        }
+            HStack(spacing: 0) {
+                ZStack {
+                    if let currentUser {
+                        ImageLoaderView(urlString: currentUser.image)
+                            .background(.spotifyWhite)
+                            .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+                            .onTapGesture {
+                            }
+                    }
                 }
+                .frame(width: 35, height: 35)
+
+                ScrollView(.horizontal) {
+                    HStack(spacing: 8) {
+                        ForEach(Category.allCases, id: \.self) { category in
+                            SpotifyCategoryCell(
+                                title: category.rawValue.capitalized,
+                                isSelected: category == selectedCategory
+                            )
+                            .onTapGesture {
+                                selectedCategory = category
+                            }
+                        }
+                    }
+                    .padding(.horizontal, 16)
+                }
+                .scrollIndicators(.hidden)
             }
         }
         .task {
