@@ -16,34 +16,23 @@ struct SpotifyHomeView: View {
         ZStack {
             Color.spotifyBlack.ignoresSafeArea()
             
-            HStack(spacing: 0) {
-                ZStack {
-                    if let currentUser {
-                        ImageLoaderView(urlString: currentUser.image)
-                            .background(.spotifyWhite)
-                            .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
-                            .onTapGesture {
-                            }
-                    }
-                }
-                .frame(width: 35, height: 35)
-
-                ScrollView(.horizontal) {
-                    HStack(spacing: 8) {
-                        ForEach(Category.allCases, id: \.self) { category in
-                            SpotifyCategoryCell(
-                                title: category.rawValue.capitalized,
-                                isSelected: category == selectedCategory
-                            )
-                            .onTapGesture {
-                                selectedCategory = category
-                            }
+            ScrollView(.vertical) {
+                LazyVStack(spacing: 1, pinnedViews: [.sectionHeaders], content: {
+                    Section{
+                        ForEach(0..<20){ _ in
+                            Rectangle()
+                                .frame(width: 200, height: 200)
                         }
+                    } header: {
+                        header
                     }
-                    .padding(.horizontal, 16)
-                }
-                .scrollIndicators(.hidden)
+                })
+                .padding(.top, 8)
+              
+                
+
             }
+            .scrollIndicators(.hidden)
         }
         .task {
             await getData()
@@ -56,6 +45,40 @@ struct SpotifyHomeView: View {
             //products = try await DatabaseHelper().getProducts()
         } catch {
             
+        }
+    }
+   
+    
+    private var header: some View {
+        HStack(spacing: 0) {
+            ZStack {
+                if let currentUser {
+                    ImageLoaderView(urlString: currentUser.image)
+                        .background(.spotifyWhite)
+                        .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+                        .onTapGesture {
+                        }
+                }
+            }
+            .frame(width: 35, height: 35)
+
+            ScrollView(.horizontal) {
+                HStack(spacing: 8) {
+                    ForEach(Category.allCases, id: \.self) { category in
+                        SpotifyCategoryCell(
+                            title: category.rawValue.capitalized,
+                            isSelected: category == selectedCategory
+                        )
+                        .onTapGesture {
+                            selectedCategory = category
+                        }
+                    }
+                }
+                .padding(.horizontal, 16)
+            }
+            .scrollIndicators(.hidden)
+            .padding(.vertical, 24)
+            .padding(.horizontal, 8)
         }
     }
 }
