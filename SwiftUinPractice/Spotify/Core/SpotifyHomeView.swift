@@ -21,6 +21,7 @@ struct SpotifyHomeView: View {
                     Section{
                         ForEach(0..<20){ _ in
                             Rectangle()
+                                .fill(Color.red)
                                 .frame(width: 200, height: 200)
                         }
                     } header: {
@@ -37,6 +38,7 @@ struct SpotifyHomeView: View {
         .task {
             await getData()
         }
+        .toolbar(.hidden, for: .navigationBar)
     }
     
     private func getData() async {
@@ -77,9 +79,12 @@ struct SpotifyHomeView: View {
                 .padding(.horizontal, 16)
             }
             .scrollIndicators(.hidden)
-            .padding(.vertical, 24)
-            .padding(.horizontal, 8)
+            .clipped()
         }
+        .padding(.vertical, 24)
+        .padding(.leading, 8)
+        .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
+        .background(Color.spotifyBlack)
     }
 }
 
